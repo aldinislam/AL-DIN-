@@ -13,6 +13,9 @@
   "build": {
     "appId": "com.aldine.app",
     "productName": "Al Dine",
+    "files": [
+      "**/*"
+    ],
     "win": {
       "icon": "l..jpeg",
       "target": "nsis"
