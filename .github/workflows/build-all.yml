@@ -5,7 +5,34 @@ on:
       - main
 
 jobs:
-  build-apps:
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Android APK
+        run: |
+          npx cap add android || echo "Android already added"
+          npx cap sync
+          cd android
+          ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: AL-DINE-Android-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+
+  build-windows:
     runs-on: windows-latest
     steps:
       - name: Check out repository
@@ -22,17 +49,8 @@ jobs:
       - name: Build Windows EXE
         run: npm run dist
 
-      - name: Build Android APK
-        run: |
-          npx cap add android || echo "Android already added"
-          npx cap sync
-          cd android
-          ./gradlew assembleDebug
-
-      - name: Upload Finished Files
+      - name: Upload Windows EXE
         uses: actions/upload-artifact@v4
         with:
-          name: AL-DINE-Packages
-          path: |
-            dist/*-Setup.exe
-            android/app/build/outputs/apk/debug/app-debug.apk
+          name: AL-DINE-Windows-EXE
+          path: dist/*-Setup.exe
