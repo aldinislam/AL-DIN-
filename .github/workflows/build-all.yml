@@ -1,0 +1,38 @@
+name: Build APK and EXE
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-apps:
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Windows EXE
+        run: npm run dist
+
+      - name: Build Android APK
+        run: |
+          npx cap add android || echo "Android already added"
+          npx cap sync
+          cd android
+          ./gradlew assembleDebug
+
+      - name: Upload Finished Files
+        uses: actions/upload-artifact@v4
+        with:
+          name: AL-DINE-Packages
+          path: |
+            dist/*-Setup.exe
+            android/app/build/outputs/apk/debug/app-debug.apk
