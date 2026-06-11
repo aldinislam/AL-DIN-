@@ -5,14 +5,18 @@
   "description": "AL DINE Islamic app (web, Capacitor, Electron, PWA)",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "cap:init": "npx cap init \"AL DINE\" com.aldine.app --web-dir=.",
-    "cap:add:android": "npx cap add android",
-    "cap:add:ios": "npx cap add ios",
-    "cap:sync": "npx cap sync",
-    "cap:open:android": "npx cap open android",
-    "cap:open:ios": "npx cap open ios"
-  },
+  "start": "electron .",
+  "pack": "electron-builder --dir",
+  "dist": "electron-builder"
+},
+"build": {
+  "appId": "com.aldine.app",
+  "productName": "Al Dine",
+  "win": {
+    "icon": "l..jpeg",
+    "target": "nsis"
+  }
+}
   "dependencies": {
     "@capacitor/android": "^7.0.0",
     "@capacitor/cli": "^7.0.0",
