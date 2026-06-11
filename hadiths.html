@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>الأحاديث | AL DINE</title>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#0b1f17" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="AL DINE" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand-wrap"><a class="brand" href="index.html">الدين</a><p class="brand-sub">AL DINE • منصة إسلامية حديثة</p></div>
+      <button id="menuToggle" class="menu-toggle" type="button" aria-label="فتح القائمة" aria-expanded="false">☰</button>
+      <nav class="nav-links desktop-nav"><a href="index.html">الرئيسية</a><a href="hadiths.html">الأحاديث</a><a href="questions.html">الأسئلة</a><a href="nawafil.html">النوافل</a><a href="quran.html">الورد القرآني</a><a href="dhikr.html">الأذكار</a><a href="contact.html">التواصل</a></nav>
+      <button id="themeToggle" class="ghost-button" type="button">🌙 الوضع الليلي</button>
+      <aside id="sideNav" class="side-nav" aria-label="القائمة الجانبية">
+        <button id="closeSideNav" class="side-nav-close" type="button" aria-label="إغلاق القائمة">×</button>
+        <a href="index.html">الرئيسية</a>
+        <a href="hadiths.html">الأحاديث</a>
+        <a href="questions.html">الأسئلة</a>
+        <a href="nawafil.html">النوافل</a>
+        <a href="quran.html">الورد القرآني</a>
+        <a href="dhikr.html">الأذكار</a>
+        <a class="nav-cta" href="download.html">تحميل التطبيق</a>
+        <a class="nav-cta" href="download.html">تحميل التطبيق</a>
+        <a href="contact.html">التواصل</a>
+      </aside>
+      <div id="navOverlay" class="nav-overlay"></div>
+    </header>
+    <main class="page-shell">
+      <section class="card hero-card">
+        <div>
+          <p class="eyebrow">الأحاديث الصحيحة</p>
+          <h1>مجموعة مختارة من الأحاديث مع تصفية ذكية</h1>
+          <p class="lede">اختر الفئة التي تريدها ثم استعرض الحديث مع مصدره ومراجعته بسهولة.</p>
+        </div>
+        <div class="pill-group" id="filterGroup"></div>
+      </section>
+      <section id="hadithGrid" class="grid three-col"></section>
+    </main>
+    <footer class="footer-card"><p>© <span id="year"></span> AL DINE</p></footer>
+    <script src="app.js"></script>
+  </body>
+</html>

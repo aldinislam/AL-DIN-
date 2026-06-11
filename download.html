@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>صفحة التحميل | AL DINE</title>
+    <meta name="description" content="صفحة تحميل تطبيق AL DINE على Android و iOS والكمبيوتر." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand-wrap">
+        <a class="brand" href="index.html">الدين</a>
+        <p class="brand-sub">AL DINE • صفحة التحميل</p>
+      </div>
+      <button id="menuToggle" class="menu-toggle" type="button" aria-label="فتح القائمة" aria-expanded="false">☰</button>
+      <nav class="nav-links desktop-nav">
+        <a href="index.html">الرئيسية</a>
+        <a href="hadiths.html">الأحاديث</a>
+        <a href="questions.html">الأسئلة</a>
+        <a href="nawafil.html">النوافل</a>
+        <a href="quran.html">الورد القرآني</a>
+        <a href="dhikr.html">الأذكار</a>
+        <a class="nav-cta" href="download.html">تحميل التطبيق</a>
+        <a href="contact.html">التواصل</a>
+      </nav>
+      <button id="themeToggle" class="ghost-button" type="button">🌙 الوضع الليلي</button>
+      <aside id="sideNav" class="side-nav" aria-label="القائمة الجانبية">
+        <button id="closeSideNav" class="side-nav-close" type="button" aria-label="إغلاق القائمة">×</button>
+        <a href="index.html">الرئيسية</a>
+        <a href="hadiths.html">الأحاديث</a>
+        <a href="questions.html">الأسئلة</a>
+        <a href="nawafil.html">النوافل</a>
+        <a href="quran.html">الورد القرآني</a>
+        <a href="dhikr.html">الأذكار</a>
+        <a class="nav-cta" href="download.html">تحميل التطبيق</a>
+        <a href="contact.html">التواصل</a>
+      </aside>
+      <div id="navOverlay" class="nav-overlay"></div>
+    </header>
+
+    <main class="page-shell">
+      <section class="download-hero card card-glow">
+        <p class="eyebrow">تحميل التطبيق</p>
+        <h1>اختر النسخة المناسبة لك</h1>
+        <p class="lede">هذه الصفحة مخصصة لتجميع روابط التحميل المستقبلية لتطبيق AL DINE على Android و iOS والكمبيوتر، مع نفس هوية الموقع الروحانية والألوان الإسلامية.</p>
+      </section>
+
+      <section class="download-grid grid three-col">
+        <article class="download-card card">
+          <span class="badge">Android APK</span>
+          <h2>تطبيق الأندرويد</h2>
+          <p>قم بتحميل نسخة APK الخاصة بتطبيق AL DINE على الهاتف مع تجربة مريحة ومصممة لتناسب استخدامك اليومي.</p>
+          <!-- ضع رابط ملف APK هنا عند رفعه على GitHub أو Cloud Storage -->
+          <a class="primary-button" href="#">تحميل Android APK</a>
+        </article>
+
+        <article class="download-card card">
+          <span class="badge">iOS App</span>
+          <h2>تطبيق الآيفون</h2>
+          <p>نسخة iOS جاهزة لربطها لاحقًا مع ملف IPA أو رابط التوزيع الرسمي الخاص بك.</p>
+          <!-- ضع رابط ملف IPA أو رابط TestFlight هنا -->
+          <a class="primary-button" href="#">تحميل iOS App</a>
+        </article>
+
+        <article class="download-card card">
+          <span class="badge">Windows Setup</span>
+          <h2>برنامج الكمبيوتر</h2>
+          <p>نسخة Windows بصيغة exe لاستخدام التطبيق على سطح المكتب بخلفية إسلامية وواجهة مريحة.</p>
+          <!-- ضع رابط ملف exe هنا عند رفعه في أي مستودع أو موقع مباشر -->
+          <a class="primary-button" href="#">تحميل Windows Setup</a>
+        </article>
+      </section>
+
+      <section class="card">
+        <h2>ملاحظة مهمة</h2>
+        <p class="lede">كل زر يملك href="#" بشكل واضح حتى لا يتسبب في خطأ عند تشغيل الصفحة قبل رفع الملفات الفعلية. عند اكتمال رفع ملفاتك، استبدل كل href="#" برابط مباشر إلى الملف المناسب.</p>
+      </section>
+    </main>
+
+    <footer class="footer-card">
+      <span>© <span id="year"></span> AL DINE</span>
+      <span>صفحة التحميل • جاهزة للربط مع ملفاتك المرفوعة</span>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
