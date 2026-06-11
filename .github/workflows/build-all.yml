@@ -19,6 +19,11 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Prepare Web Directory
+        run: |
+          mkdir www
+          cp -r index.html css js assets img www/ 2>/dev/null || cp -r * www/ || echo "Files copied"
+
       - name: Build Android APK
         run: |
           npx cap add android || echo "Android already added"
