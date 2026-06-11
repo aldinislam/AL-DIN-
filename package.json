@@ -1,22 +1,22 @@
-{
+
   "name": "al-dine",
   "version": "1.0.0",
   "private": true,
   "description": "AL DINE Islamic app (web, Capacitor, Electron, PWA)",
   "main": "main.js",
   "scripts": {
-  "start": "electron .",
-  "pack": "electron-builder --dir",
-  "dist": "electron-builder"
-},
-"build": {
-  "appId": "com.aldine.app",
-  "productName": "Al Dine",
-  "win": {
-    "icon": "l..jpeg",
-    "target": "nsis"
-  }
-}
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.aldine.app",
+    "productName": "Al Dine",
+    "win": {
+      "icon": "l..jpeg",
+      "target": "nsis"
+    }
+  },
   "dependencies": {
     "@capacitor/android": "^7.0.0",
     "@capacitor/cli": "^7.0.0",
