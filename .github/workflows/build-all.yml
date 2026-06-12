@@ -32,7 +32,7 @@ jobs:
           ./gradlew assembleDebug
 
       - name: Build Windows EXE
-        run: npm run dist -- --win
+        run: npx electron-builder --win
 
       - name: Upload Finished Packages
         uses: actions/upload-artifact@v4
