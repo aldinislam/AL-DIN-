@@ -5,8 +5,13 @@
     "output": "dist"
   },
   "files": [
-    "www/**/*",
-    "index.js"
+    "index.html",
+    "index.js",
+    "css/**/*",
+    "js/**/*",
+    "assets/**/*",
+    "img/**/*",
+    "icon.png"
   ],
   "win": {
     "icon": "icon.png",
