@@ -16,6 +16,13 @@ jobs:
         with:
           node-version: 20
 
+      # ☕ إضافة جافا 21 لحل مشكلة invalid source release
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+
       - name: Install Dependencies
         run: npm install
 
