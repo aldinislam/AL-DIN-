@@ -17,16 +17,16 @@
       "**/*"
     ],
     "win": {
-      "icon": "l..jpeg",
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        }
+  "icon": "icon.png",
+  "target": [
+    {
+      "target": "nsis",
+      "arch": [
+        "x64"
       ]
-    },
+    }
+  ]
+}
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
