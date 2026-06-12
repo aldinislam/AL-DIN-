@@ -7,7 +7,7 @@ files:
   - filter:
       - '**/*'
 win:
-  icon: l..jpeg
+  icon: icon.png
   target:
     - target: nsis
       arch:
