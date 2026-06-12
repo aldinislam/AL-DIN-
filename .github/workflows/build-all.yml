@@ -5,8 +5,8 @@ on:
       - main
 
 jobs:
-  build-android:
-    runs-on: ubuntu-latest
+  build-apps:
+    runs-on: windows-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -21,8 +21,13 @@ jobs:
 
       - name: Prepare Web Directory
         run: |
-          mkdir www
-          cp -r index.html css js assets img www/ 2>/dev/null || cp -r * www/ || echo "Files copied"
+          mkdir -p www
+          shopt -s extglob 2>/dev/null || true
+          cp -r index.html css js assets img www/ 2>/dev/null || cp -r * www/ 2>/dev/null || true
+          ls -la www
+
+      - name: Build Windows EXE
+        run: npm run dist
 
       - name: Build Android APK
         run: |
@@ -31,31 +36,10 @@ jobs:
           cd android
           ./gradlew assembleDebug
 
-      - name: Upload APK
+      - name: Upload Finished Files
         uses: actions/upload-artifact@v4
         with:
-          name: AL-DINE-Android-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
-
-  build-windows:
-    runs-on: windows-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Build Windows EXE
-        run: npm run dist
-
-      - name: Upload Windows EXE
-        uses: actions/upload-artifact@v4
-        with:
-          name: AL-DINE-Windows-EXE
-          path: dist/*-Setup.exe
+          name: AL-DINE-Packages
+          path: |
+            dist/*-Setup.exe
+            android/app/build/outputs/apk/debug/app-debug.apk
