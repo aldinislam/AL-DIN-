@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-apps:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -19,19 +19,10 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Prepare Web Directory
-        shell: pwsh
+      - name: Prepare Web Directory (www)
         run: |
-          New-Item -ItemType Directory -Force -Path www
-          if (Test-Path index.html) { Copy-Item index.html -Destination www/ }
-          if (Test-Path css) { Copy-Item -Recurse css -Destination www/ }
-          if (Test-Path js) { Copy-Item -Recurse js -Destination www/ }
-          if (Test-Path assets) { Copy-Item -Recurse assets -Destination www/ }
-          if (Test-Path img) { Copy-Item -Recurse img -Destination www/ }
-          Get-ChildItem www
-
-      - name: Build Windows EXE
-        run: npm run dist
+          mkdir -p www
+          cp -r index.html css js assets img www/ 2>/dev/null || cp -r * www/ 2>/dev/null || true
 
       - name: Build Android APK
         run: |
@@ -40,10 +31,13 @@ jobs:
           cd android
           ./gradlew assembleDebug
 
-      - name: Upload Finished Files
+      - name: Build Windows EXE
+        run: npm run dist -- --win
+
+      - name: Upload Finished Packages
         uses: actions/upload-artifact@v4
         with:
-          name: AL-DINE-Packages
+          name: AL-DINE-Final-Apps
           path: |
             dist/*-Setup.exe
             android/app/build/outputs/apk/debug/app-debug.apk
