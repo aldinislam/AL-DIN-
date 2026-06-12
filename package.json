@@ -1,19 +1,47 @@
 {
   "name": "al-dine",
+  "author": "daoud",
   "version": "1.0.0",
-  "description": "Al Dine Desktop and Mobile Application",
-  "main": "index.js",
-  "author": "Fouad",
+  "private": true,
+  "description": "AL DINE Islamic app (web, Capacitor, Electron, PWA)",
+  "main": "main.js",
   "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
     "dist": "electron-builder"
   },
+  "build": {
+    "appId": "com.aldine.app",
+    "productName": "Al Dine",
+    "files": [
+      "**/*"
+    ],
+    "win": {
+      "icon": "icon.png",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
   "dependencies": {
-    "@capacitor/android": "^6.0.0",
-    "@capacitor/core": "^6.0.0"
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/cli": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/ios": "^7.0.0"
   },
   "devDependencies": {
-    "@capacitor/cli": "^6.0.0",
-    "electron": "30.0.0",
-    "electron-builder": "24.13.3"
+    "electron": "^30.0.0",
+    "electron-builder": "^26.15.2",
+    "typescript": "^5.6.3"
   }
 }
+
