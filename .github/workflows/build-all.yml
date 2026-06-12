@@ -20,11 +20,15 @@ jobs:
         run: npm install
 
       - name: Prepare Web Directory
+        shell: pwsh
         run: |
-          mkdir -p www
-          shopt -s extglob 2>/dev/null || true
-          cp -r index.html css js assets img www/ 2>/dev/null || cp -r * www/ 2>/dev/null || true
-          ls -la www
+          New-Item -ItemType Directory -Force -Path www
+          if (Test-Path index.html) { Copy-Item index.html -Destination www/ }
+          if (Test-Path css) { Copy-Item -Recurse css -Destination www/ }
+          if (Test-Path js) { Copy-Item -Recurse js -Destination www/ }
+          if (Test-Path assets) { Copy-Item -Recurse assets -Destination www/ }
+          if (Test-Path img) { Copy-Item -Recurse img -Destination www/ }
+          Get-ChildItem www
 
       - name: Build Windows EXE
         run: npm run dist
