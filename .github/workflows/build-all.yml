@@ -5,7 +5,8 @@ on:
       - main
 
 jobs:
-  build-apps:
+  # 📱 المهمة الأولى: بناء الأندرويد على سيرفر لينكس (مضمون وناجح)
+  build-android:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -31,18 +32,31 @@ jobs:
           cd android
           ./gradlew assembleDebug
 
-      - name: Upload Android APK (Always)
-        if: always()
+      - name: Upload Android APK
         uses: actions/upload-artifact@v4
         with:
           name: AL-DINE-Android-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
 
+  # 💻 المهمة الثانية: بناء الويندوز على سيرفر ويندوز حقيقي (لحل مشكلة doPack)
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
       - name: Build Windows EXE
         run: npx electron-builder --win
 
       - name: Upload Windows EXE
-        if: success() || failure()
         uses: actions/upload-artifact@v4
         with:
           name: AL-DINE-Windows-EXE
