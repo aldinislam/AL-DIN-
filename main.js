@@ -8,7 +8,7 @@ function createWindow() {
     minWidth: 1100,
     minHeight: 720,
     title: 'AL DINE',
-    icon: path.join(__dirname, 'l..jpeg'),
+    icon: path.join(__dirname, 'icon.png'),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
