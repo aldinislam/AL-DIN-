@@ -11,7 +11,7 @@ const urlsToCache = [
   './dhikr.html',
   './contact.html',
   './manifest.json',
-  './l..jpeg'
+  './icon.png'
 ];
 
 self.addEventListener('install', (event) => {
