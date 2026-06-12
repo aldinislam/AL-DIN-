@@ -1,0 +1,22 @@
+{
+  "appId": "com.aldine.app",
+  "productName": "Al Dine",
+  "directories": {
+    "output": "dist"
+  },
+  "files": [
+    "www/**/*",
+    "index.js"
+  ],
+  "win": {
+    "icon": "icon.png",
+    "target": [
+      {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      }
+    ]
+  }
+}
