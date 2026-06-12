@@ -10,11 +10,9 @@
     "css/**/*",
     "js/**/*",
     "assets/**/*",
-    "img/**/*",
-    "icon.png"
+    "img/**/*"
   ],
   "win": {
-    "icon": "icon.png",
     "target": [
       {
         "target": "nsis",
