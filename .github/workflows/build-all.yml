@@ -1,12 +1,12 @@
-name: Build Windows EXE Only
+name: Build Android APK Only
 on:
   push:
     branches:
       - main
 
 jobs:
-  build-windows:
-    runs-on: windows-latest
+  build-android:
+    runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -19,11 +19,20 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Build Windows EXE
-        run: npx electron-builder --win
+      - name: Prepare Web Directory (www)
+        run: |
+          mkdir -p www
+          cp -r index.html css js assets img www/ 2>/dev/null || cp -r * www/ 2>/dev/null || true
 
-      - name: Upload Windows EXE
+      - name: Build Android APK
+        run: |
+          npx cap add android || echo "Android already added"
+          npx cap sync
+          cd android
+          ./gradlew assembleDebug
+
+      - name: Upload Android APK
         uses: actions/upload-artifact@v4
         with:
-          name: AL-DINE-Windows-EXE
-          path: dist/*-Setup.exe
+          name: AL-DINE-Android-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
