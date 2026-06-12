@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Al Dine Desktop and Mobile Application",
   "main": "index.js",
+  "author": "Fouad",
   "scripts": {
     "dist": "electron-builder"
   },
@@ -18,10 +19,9 @@
   "build": {
     "appId": "com.aldine.app",
     "productName": "Al Dine",
-    "files": [
-      "www/**/*",
-      "index.js"
-    ],
+    "directories": {
+      "output": "dist"
+    },
     "win": {
       "icon": "icon.png",
       "target": [
