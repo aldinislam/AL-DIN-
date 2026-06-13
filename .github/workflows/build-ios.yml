@@ -1,0 +1,56 @@
+name: Build iOS App Only
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-ios:
+    runs-on: macos-latest # 🍏 سيرفر ماك السحابي
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Prepare Web Directory (www)
+        run: |
+          mkdir -p www
+          cp -r index.html css js assets img www/ 2>/dev/null || cp -r * www/ 2>/dev/null || true
+
+      # 📦 إضافة منصة الآيفون ومزامنة ملفات تطبيق "الدين"
+      - name: Setup iOS Platform
+        run: |
+          npx cap add ios || echo "iOS already added"
+          npx cap sync ios
+
+      # ⚙️ تثبيت مكتبات الكاكابودز (CocoaPods) اللازمة لبيئة آبل
+      - name: Install CocoaPods Dependencies
+        run: |
+          cd ios/App
+          pod install
+
+      # 🚀 تجميع وبناء التطبيق وتحديد مسار المخرجات بدقة
+      - name: Compile iOS App
+        run: |
+          cd ios/App
+          xcodebuild -workspace App.xcworkspace \
+            -scheme App \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -derivedDataPath buildOutput \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      # 📥 رفع ملف التطبيق الناتج (App Bundle) كأداة تحميل في جيتهاب
+      - name: Upload iOS App Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AL-DINE-iOS-Simulator-App
+          path: ios/App/buildOutput/Build/Products/Debug-iphonesimulator/App.app
