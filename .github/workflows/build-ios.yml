@@ -1,4 +1,4 @@
-name: Build iOS App Only
+name: Build iOS IPA Only
 on:
   push:
     branches:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-ios:
-    runs-on: macos-latest # 🍏 سيرفر ماك السحابي
+    runs-on: macos-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -24,33 +24,40 @@ jobs:
           mkdir -p www
           cp -r index.html css js assets img www/ 2>/dev/null || cp -r * www/ 2>/dev/null || true
 
-      # 📦 إضافة منصة الآيفون ومزامنة ملفات تطبيق "الدين"
       - name: Setup iOS Platform
         run: |
           npx cap add ios || echo "iOS already added"
           npx cap sync ios
 
-      # ⚙️ تثبيت مكتبات الكاكابودز (CocoaPods) اللازمة لبيئة آبل
       - name: Install CocoaPods Dependencies
         run: |
           cd ios/App
           pod install
 
-      # 🚀 تجميع وبناء التطبيق وتحديد مسار المخرجات بدقة
-      - name: Compile iOS App
+      # 🚀 بناء التطبيق لمعالج الآيفون الحقيقي وبدون توقيع إجباري
+      - name: Compile iOS App for Real Device
         run: |
           cd ios/App
           xcodebuild -workspace App.xcworkspace \
             -scheme App \
-            -configuration Debug \
-            -sdk iphonesimulator \
+            -configuration Release \
+            -sdk iphoneos \
             -derivedDataPath buildOutput \
             CODE_SIGNING_ALLOWED=NO \
-            build
+            CODE_SIGNING_REQUIRED=NO \
+            clean build
 
-      # 📥 رفع ملف التطبيق الناتج (App Bundle) كأداة تحميل في جيتهاب
-      - name: Upload iOS App Artifact
+      # 📦 تحويل ملف الـ App إلى صيغة IPA المقبولة في التثبيت
+      - name: Package IPA
+        run: |
+          mkdir -p ios/App/buildOutput/Payload
+          cp -r ios/App/buildOutput/Build/Products/Release-iphoneos/App.app ios/App/buildOutput/Payload/
+          cd ios/App/buildOutput
+          zip -r AL-DINE.ipa Payload
+
+      # 📥 رفع ملف الـ IPA النهائي لتحميله على كمبيوترك الويندوز
+      - name: Upload iOS IPA Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: AL-DINE-iOS-Simulator-App
-          path: ios/App/buildOutput/Build/Products/Debug-iphonesimulator/App.app
+          name: AL-DINE-iOS-IPA
+          path: ios/App/buildOutput/AL-DINE.ipa
