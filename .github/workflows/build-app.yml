@@ -1,11 +1,53 @@
-name: Build iOS IPA Only
+name: Build AL-DINE App (Android APK & iOS IPA)
 on:
   push:
     branches:
       - main
 
 jobs:
+  # 🤖 جيج الأندرويد: لبناء ملف APK
+  build-android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Prepare Web Directory
+        run: |
+          mkdir -p www
+          cp -r index.html css js assets img www/ 2>/dev/null || cp -r * www/ 2>/dev/null || true
+
+      - name: Build Android APK
+        run: |
+          npx cap add android || echo "Android already added"
+          npx cap sync android
+          cd android
+          ./gradlew assembleDebug
+
+      - name: Upload Android APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AL-DINE-Android-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+
+  # 🍏 جيج الآيفون: لبناء ملف IPA للآيفون الحقيقي
   build-ios:
+    name: Build iOS IPA
     runs-on: macos-latest
     steps:
       - name: Check out repository
@@ -19,7 +61,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Prepare Web Directory (www)
+      - name: Prepare Web Directory
         run: |
           mkdir -p www
           cp -r index.html css js assets img www/ 2>/dev/null || cp -r * www/ 2>/dev/null || true
@@ -34,7 +76,6 @@ jobs:
           cd ios/App
           pod install
 
-      # 🚀 بناء التطبيق لمعالج الآيفون الحقيقي وبدون توقيع إجباري
       - name: Compile iOS App for Real Device
         run: |
           cd ios/App
@@ -47,7 +88,6 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             clean build
 
-      # 📦 تحويل ملف الـ App إلى صيغة IPA المقبولة في التثبيت
       - name: Package IPA
         run: |
           mkdir -p ios/App/buildOutput/Payload
@@ -55,7 +95,6 @@ jobs:
           cd ios/App/buildOutput
           zip -r AL-DINE.ipa Payload
 
-      # 📥 رفع ملف الـ IPA النهائي لتحميله على كمبيوترك الويندوز
       - name: Upload iOS IPA Artifact
         uses: actions/upload-artifact@v4
         with:
