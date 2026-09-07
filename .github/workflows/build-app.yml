@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  # 1. بناء تطبيق الويندوز باستخدام Electron
+  # 1. بناء تطبيق الويندوز (.exe)
   build-windows-exe:
     runs-on: windows-latest
 
@@ -20,31 +20,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
 
-      - name: Install Dependencies
-        run: npm ci || npm install
-
-      - name: Build Web Assets
-        run: npm run build --if-present
-
-      - name: Build Electron EXE
+      - name: Build Windows Executable App
         run: |
-          npx electron-builder --win nsis unpacked || npx electron-forge make || npm run electron:build || npm run build:electron
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          npm install -g nativefier
+          nativefier --name "Al-Dine" "." build-exe --single-instance
 
-      - name: Upload Windows Executable (.exe)
+      - name: Upload Windows Executable Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Windows-Executable-App
-          path: |
-            dist/*.exe
-            out/**/*.exe
-            build/*.exe
-            release/*.exe
+          path: build-exe/
 
-  # 2. بناء تطبيق الأندرويد باستخدام Capacitor
+  # 2. بناء تطبيق الأندرويد (.apk)
   build-android-apk:
     runs-on: ubuntu-latest
 
@@ -62,16 +50,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
 
-      - name: Install Dependencies
-        run: npm ci || npm install
+      - name: Install Capacitor Dependencies
+        run: |
+          npm install @capacitor/core @capacitor/cli @capacitor/android --save-dev
 
-      - name: Build Web Assets
-        run: npm run build --if-present
-
-      - name: Sync Capacitor Android
-        run: npx cap sync android
+      - name: Initialize and Add Android Platform
+        run: |
+          npx cap init "Al-Dine" "com.aldine.app" --web-dir "." || true
+          npx cap add android || true
+          npx cap sync android
 
       - name: Build Android APK with Gradle
         run: |
@@ -79,7 +67,7 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug
 
-      - name: Upload Android APK
+      - name: Upload Android APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Android-Package-APK
