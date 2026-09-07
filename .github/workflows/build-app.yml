@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  # 1. بناء تطبيق الويندوز (.exe) باستخدام PWABuilder / Nativefier
+  # 1. بناء تطبيق الويندوز باستخدام Electron
   build-windows-exe:
     runs-on: windows-latest
 
@@ -16,28 +16,35 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js Environment
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
-      - name: Install Project Dependencies
-        run: npm install --legacy-peer-deps || true
+      - name: Install Dependencies
+        run: npm ci || npm install
 
-      - name: Build Web App
-        run: npm run build || true
+      - name: Build Web Assets
+        run: npm run build --if-present
 
-      - name: Package Web App as Windows EXE
+      - name: Build Electron EXE
         run: |
-          npx nativefier --name "Al-Dine App" "." --out dist-exe/ || mkdir dist-exe
+          npx electron-builder --win nsis unpacked || npx electron-forge make || npm run electron:build || npm run build:electron
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload Windows Executable Artifact
+      - name: Upload Windows Executable (.exe)
         uses: actions/upload-artifact@v4
         with:
           name: Windows-Executable-App
-          path: dist-exe/
+          path: |
+            dist/*.exe
+            out/**/*.exe
+            build/*.exe
+            release/*.exe
 
-  # 2. بناء تطبيق الأندرويد (.apk)
+  # 2. بناء تطبيق الأندرويد باستخدام Capacitor
   build-android-apk:
     runs-on: ubuntu-latest
 
@@ -51,22 +58,29 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Setup Node.js Environment
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
-      - name: Install Project Dependencies
-        run: npm install --legacy-peer-deps || true
+      - name: Install Dependencies
+        run: npm ci || npm install
 
-      - name: Build Project
-        run: npm run build || true
+      - name: Build Web Assets
+        run: npm run build --if-present
 
-      - name: Upload Web Build Artifact
+      - name: Sync Capacitor Android
+        run: npx cap sync android
+
+      - name: Build Android APK with Gradle
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload Android APK
         uses: actions/upload-artifact@v4
         with:
-          name: Web-Build-Files
-          path: |
-            .
-            !node_modules
-            !.git
+          name: Android-Package-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
