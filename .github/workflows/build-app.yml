@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  # 1. بناء تطبيق الويندوز (.exe) من الرابط المباشر
+  # 1. بناء تطبيق الويندوز (.exe)
   build-windows-exe:
     runs-on: windows-latest
 
@@ -21,20 +21,16 @@ jobs:
         with:
           node-version: 20
 
-      - name: Build Windows App from Live URL
+      - name: Build Windows Executable App
         run: |
           npm install -g nativefier
-          nativefier --name "Al-Dine" "https://aldinislam.github.io/AL-DIN-/" build-exe --single-instance
+          nativefier --name "Al-Dine" "." build-exe --single-instance
 
-      - name: Zip Executable Folder
-        run: |
-          Compress-Archive -Path build-exe/* -DestinationPath Al-Dine-Windows.zip
-
-      - name: Upload Windows Zip Artifact
+      - name: Upload Windows Executable Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Al-Dine-Windows-Zip
-          path: Al-Dine-Windows.zip
+          name: Windows-Executable-App
+          path: build-exe/
 
   # 2. بناء تطبيق الأندرويد (.apk)
   build-android-apk:
