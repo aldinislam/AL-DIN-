@@ -106,6 +106,7 @@ function renderNawafil() {
           <p>${item.howToPerform}</p>
           <p class="lede">السور المقترحة: ${item.recommendedSurahs.join(' • ')}</p>
           <p>${item.benefit}</p>
+          ${item.evidence ? `<p class="lede">الدليل: ${item.evidence}</p>` : ''}
         </article>
       `).join('');
     });
@@ -143,6 +144,7 @@ function renderDhikr() {
             <h3>${item.title}</h3>
             <p>${item.text}</p>
             <p class="lede">${item.note}</p>
+            ${item.source ? `<p class="lede">المصدر: ${item.source} — ${item.reference}</p>` : ''}
             <div class="counter-row">
               <span class="counter-chip">العدّاد: <strong id="count-${item.id}">0</strong> / ${item.repeat}</span>
               <button class="counter-btn" data-id="${item.id}" type="button">+1</button>
