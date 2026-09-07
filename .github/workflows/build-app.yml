@@ -26,19 +26,24 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install Project Dependencies Safely
+      - name: Install Project Dependencies
         run: npm install --legacy-peer-deps || true
 
-      - name: Install Capacitor Dependencies
+      - name: Install Capacitor
         run: npm install @capacitor/core @capacitor/cli @capacitor/android --save-dev --legacy-peer-deps
 
-      - name: Initialize and Add Android Platform
+      - name: Prepare Web Assets (Create www folder)
         run: |
-          npx cap init "Al-Dine" "com.aldine.app" --web-dir "." || true
+          mkdir -p www
+          rsync -av --exclude='www' --exclude='android' --exclude='node_modules' --exclude='.git' --exclude='.github' ./ www/
+
+      - name: Initialize and Sync Android
+        run: |
+          npx cap init "Al-Dine" "com.aldine.app" --web-dir "www" --force
           npx cap add android || true
           npx cap sync android
 
-      - name: Build Android APK with Gradle
+      - name: Build Android APK
         run: |
           cd android
           chmod +x gradlew
