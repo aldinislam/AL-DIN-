@@ -32,14 +32,14 @@ jobs:
       - name: Install Capacitor
         run: npm install @capacitor/core @capacitor/cli @capacitor/android --save-dev --legacy-peer-deps
 
-      - name: Prepare Web Assets (Create www folder)
+      - name: Prepare Web Assets
         run: |
           mkdir -p www
           rsync -av --exclude='www' --exclude='android' --exclude='node_modules' --exclude='.git' --exclude='.github' ./ www/
 
       - name: Initialize and Sync Android
         run: |
-          npx cap init "Al-Dine" "com.aldine.app" --web-dir "www" --force
+          npx cap init "Al-Dine" "com.aldine.app" --web-dir "www" || true
           npx cap add android || true
           npx cap sync android
 
