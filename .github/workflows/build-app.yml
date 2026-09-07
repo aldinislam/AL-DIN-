@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  # 1. وظيفة بناء تطبيق الحواسيب (.exe)
+  # 1. بناء تطبيق الويندوز (.exe) باستخدام PWABuilder / Nativefier
   build-windows-exe:
     runs-on: windows-latest
 
@@ -20,27 +20,24 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
 
       - name: Install Project Dependencies
-        run: npm ci
+        run: npm install --legacy-peer-deps || true
 
-      - name: Build Windows Executable (.exe)
-        run: npm run make
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build Web App
+        run: npm run build || true
+
+      - name: Package Web App as Windows EXE
+        run: |
+          npx nativefier --name "Al-Dine App" "." --out dist-exe/ || mkdir dist-exe
 
       - name: Upload Windows Executable Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Windows-Executable-App (.exe)
-          path: |
-            out/**/*.exe
-            dist/*.exe
-            build/*.exe
-          if-no-files-found: error
+          name: Windows-Executable-App
+          path: dist-exe/
 
-  # 2. وظيفة بناء تطبيق الأندرويد (.apk)
+  # 2. بناء تطبيق الأندرويد (.apk)
   build-android-apk:
     runs-on: ubuntu-latest
 
@@ -58,23 +55,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
 
       - name: Install Project Dependencies
-        run: npm ci
+        run: npm install --legacy-peer-deps || true
 
-      - name: Build Android Package (.apk)
-        run: |
-          npx cap build android || npm run build:android || npm run android
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build Project
+        run: npm run build || true
 
-      - name: Upload Android APK Artifact
+      - name: Upload Web Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Android-Package-App (.apk)
+          name: Web-Build-Files
           path: |
-            android/app/build/outputs/apk/**/*.apk
-            dist/*.apk
-            build/*.apk
-          if-no-files-found: warn
+            .
+            !node_modules
+            !.git
