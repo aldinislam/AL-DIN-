@@ -1,102 +1,80 @@
-name: Build AL-DINE App (Android APK & iOS IPA)
+name: Build Desktop EXE & Android APK
+
 on:
   push:
     branches:
       - main
+      - master
+  workflow_dispatch:
 
 jobs:
-  # 🤖 جيج الأندرويد: لبناء ملف APK
-  build-android:
-    name: Build Android APK
-    runs-on: ubuntu-latest
+  # 1. وظيفة بناء تطبيق الحواسيب (.exe)
+  build-windows-exe:
+    runs-on: windows-latest
+
     steps:
-      - name: Check out repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Node.js
+      - name: Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
-      - name: Set up JDK 21
+      - name: Install Project Dependencies
+        run: npm ci
+
+      - name: Build Windows Executable (.exe)
+        run: npm run make
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Windows Executable Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows-Executable-App (.exe)
+          path: |
+            out/**/*.exe
+            dist/*.exe
+            build/*.exe
+          if-no-files-found: error
+
+  # 2. وظيفة بناء تطبيق الأندرويد (.apk)
+  build-android-apk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '21'
+          java-version: '17'
 
-      - name: Install Dependencies
-        run: npm install
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
 
-      - name: Prepare Web Directory
+      - name: Install Project Dependencies
+        run: npm ci
+
+      - name: Build Android Package (.apk)
         run: |
-          mkdir -p www
-          cp -r index.html css js assets img www/ 2>/dev/null || cp -r * www/ 2>/dev/null || true
-
-      - name: Build Android APK
-        run: |
-          npx cap add android || echo "Android already added"
-          npx cap sync android
-          cd android
-          ./gradlew assembleDebug
+          npx cap build android || npm run build:android || npm run android
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Android APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: AL-DINE-Android-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
-
-  # 🍏 جيج الآيفون: لبناء ملف IPA للآيفون الحقيقي
-  build-ios:
-    name: Build iOS IPA
-    runs-on: macos-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Prepare Web Directory
-        run: |
-          mkdir -p www
-          cp -r index.html css js assets img www/ 2>/dev/null || cp -r * www/ 2>/dev/null || true
-
-      - name: Setup iOS Platform
-        run: |
-          npx cap add ios || echo "iOS already added"
-          npx cap sync ios
-
-      - name: Install CocoaPods Dependencies
-        run: |
-          cd ios/App
-          pod install
-
-      - name: Compile iOS App for Real Device
-        run: |
-          cd ios/App
-          xcodebuild -workspace App.xcworkspace \
-            -scheme App \
-            -configuration Release \
-            -sdk iphoneos \
-            -derivedDataPath buildOutput \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO \
-            clean build
-
-      - name: Package IPA
-        run: |
-          mkdir -p ios/App/buildOutput/Payload
-          cp -r ios/App/buildOutput/Build/Products/Release-iphoneos/App.app ios/App/buildOutput/Payload/
-          cd ios/App/buildOutput
-          zip -r AL-DINE.ipa Payload
-
-      - name: Upload iOS IPA Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: AL-DINE-iOS-IPA
-          path: ios/App/buildOutput/AL-DINE.ipa
+          name: Android-Package-App (.apk)
+          path: |
+            android/app/build/outputs/apk/**/*.apk
+            dist/*.apk
+            build/*.apk
+          if-no-files-found: warn
