@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  # 1. بناء تطبيق الويندوز (.exe)
+  # 1. بناء تطبيق الويندوز (.exe) من الرابط المباشر
   build-windows-exe:
     runs-on: windows-latest
 
@@ -21,16 +21,20 @@ jobs:
         with:
           node-version: 20
 
-      - name: Build Windows Executable App
+      - name: Build Windows App from Live URL
         run: |
           npm install -g nativefier
-          nativefier --name "Al-Dine" "." build-exe --single-instance
+          nativefier --name "Al-Dine" "https://aldinislam.github.io/AL-DIN-/" build-exe --single-instance
 
-      - name: Upload Windows Executable Artifact
+      - name: Zip Executable Folder
+        run: |
+          Compress-Archive -Path build-exe/* -DestinationPath Al-Dine-Windows.zip
+
+      - name: Upload Windows Zip Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Windows-Executable-App
-          path: build-exe/
+          name: Al-Dine-Windows-Zip
+          path: Al-Dine-Windows.zip
 
   # 2. بناء تطبيق الأندرويد (.apk)
   build-android-apk:
@@ -51,9 +55,13 @@ jobs:
         with:
           node-version: 20
 
+      - name: Install Project Dependencies Safely
+        run: |
+          npm install --legacy-peer-deps || true
+
       - name: Install Capacitor Dependencies
         run: |
-          npm install @capacitor/core @capacitor/cli @capacitor/android --save-dev
+          npm install @capacitor/core @capacitor/cli @capacitor/android --save-dev --legacy-peer-deps
 
       - name: Initialize and Add Android Platform
         run: |
