@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Android APK Only
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install Dependencies
         run: npm install --legacy-peer-deps || true
@@ -37,7 +37,7 @@ jobs:
           mkdir -p www
           rsync -av --exclude='www' --exclude='android' --exclude='node_modules' --exclude='.git' --exclude='.github' ./ www/
 
-      - name: Initialize & Sync Capacitor
+      - name: Initialize and Sync Android
         run: |
           npx cap init "Al-Dine" "com.aldine.app" --web-dir "www" || true
           npx cap add android || true
@@ -47,13 +47,21 @@ jobs:
         run: |
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
-      - name: Build APK via Gradle
+      - name: Force Java 21 in Android Gradle Config
+        run: |
+          if [ -f "android/app/build.gradle" ]; then
+            sed -i 's/JavaVersion.VERSION_17/JavaVersion.VERSION_21/g' android/app/build.gradle || true
+            sed -i 's/JavaVersion.VERSION_11/JavaVersion.VERSION_21/g' android/app/build.gradle || true
+          fi
+
+      - name: Build Android APK
         run: |
           cd android
           chmod +x gradlew
+          ./gradlew clean
           ./gradlew assembleDebug --no-daemon
 
-      - name: Upload APK Artifact
+      - name: Upload Android APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Android-Package-APK
