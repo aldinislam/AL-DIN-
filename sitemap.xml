@@ -1,57 +1,70 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://your-domain.com/</loc>
-    <lastmod>2026-06-11</lastmod>
-    <changefreq>weekly</changefreq>
+<!-- الصفحة الرئيسية -->
+<url>
+    <loc>https://aldinislam.github.io/AL-DIN-/index.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://your-domain.com/index.html</loc>
-    <lastmod>2026-06-11</lastmod>
+</url>
+
+<url>
+    <loc>https://aldinislam.github.io/AL-DIN-/index.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+</url>
+
+<!-- صفحة القرآن الكريم -->
+<url>
+    <loc>https://aldinislam.github.io/AL-DIN-/quran.html</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-  </url>
-  <url>
-    <loc>https://your-domain.com/hadiths.html</loc>
-    <lastmod>2026-06-11</lastmod>
+    <priority>0.9</priority>
+</url>
+
+<!-- صفحة الأحاديث النبوية -->
+<url>
+    <loc>https://aldinislam.github.io/AL-DIN-/hadiths.html</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
-  </url>
-  <url>
-    <loc>https://your-domain.com/questions.html</loc>
-    <lastmod>2026-06-11</lastmod>
+    <priority>0.9</priority>
+</url>
+
+<!-- صفحة الأذكار -->
+<url>
+    <loc>https://aldinislam.github.io/AL-DIN-/dhikr.html</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.88</priority>
-  </url>
-  <url>
-    <loc>https://your-domain.com/nawafil.html</loc>
-    <lastmod>2026-06-11</lastmod>
+    <priority>0.9</priority>
+</url>
+
+<!-- صفحة النوافل -->
+<url>
+    <loc>https://aldinislam.github.io/AL-DIN-/nawafil.html</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.88</priority>
-  </url>
-  <url>
-    <loc>https://your-domain.com/quran.html</loc>
-    <lastmod>2026-06-11</lastmod>
+    <priority>0.8</priority>
+</url>
+
+<!-- صفحة الأسئلة والفتاوى -->
+<url>
+    <loc>https://aldinislam.github.io/AL-DIN-/questions.html</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.88</priority>
-  </url>
-  <url>
-    <loc>https://your-domain.com/dhikr.html</loc>
-    <lastmod>2026-06-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
-  </url>
-  <url>
-    <loc>https://your-domain.com/download.html</loc>
-    <lastmod>2026-06-11</lastmod>
+    <priority>0.8</priority>
+</url>
+
+<!-- صفحة التحميل -->
+<url>
+    <loc>https://aldinislam.github.io/AL-DIN-/download.html</loc>
+    <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://your-domain.com/contact.html</loc>
-    <lastmod>2026-06-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-</urlset>
+    <priority>0.7</priority>
+</url>
+
+<!-- صفحة التواصل -->
+<url>
+    <loc>https://aldinislam.github.io/AL-DIN-/contact.html</loc>
+    <lastmod>2026-09-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+</url>
